@@ -8,4 +8,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Ras.Core" Version="0.1.0-beta" />
+    <PackageReference Include="Usace.CC.Plugin" Version="1.0.5" />
+  </ItemGroup>
+
 </Project>
