@@ -13,4 +13,10 @@
     <PackageReference Include="Usace.CC.Plugin" Version="1.0.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="payload-ras.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
