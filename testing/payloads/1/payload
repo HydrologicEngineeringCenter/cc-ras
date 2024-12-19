@@ -10,7 +10,7 @@
 		"StoreType": "S3",
 		"DsProfile": "CC",
 		"Parameters": {
-			"root": "/testing"
+			"root": "minio/model-library"
 
     },
 		"Session": null
@@ -19,20 +19,20 @@
 		{
 			"Name": "Result File",
 			"ID": "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
-			"Paths": [ "C:\\Users\\HEC\\Documents\\RAS Projects\\Berryessa 2025 Dambreak\\Results\\Dam Break.h5" ],
+			"Paths": [ "Results/Dam Break.h5" ],
 			"StoreName": "CC"
 		},
 		{
 			"Name": "Terrain File",
 			"ID": "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
-			"Paths": [ "C:\\Users\\HEC\\Documents\\RAS Projects\\Berryessa 2025 Dambreak\\Terrains\\Terrain.h5" ],
+			"Paths": [ "Terrains/Terrain.h5" ],
 			"StoreName": "CC"
 		}
 	],
 	"outputs": [{
 		"Name": "Output File",
 		"ID": "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
-		"Paths": [ "C:\\Users\\HEC\\source\\repos\\cc-ras\\output.tif" ],
+		"Paths": [ "Outputs/output.tif" ],
 		"StoreName": "CC"
 	}]
 }

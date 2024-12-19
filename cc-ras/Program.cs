@@ -4,6 +4,8 @@ using Usace.CC.Plugin;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using Utility.Extensions.Attributes;
+using static Ras.Layers.Project;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 class Test
 {
@@ -27,25 +29,8 @@ class Test
         SetEnv(EnvironmentVariables.CC_PROFILE, "CC");
         SetEnv(EnvironmentVariables.CC_PROFILE + "_" + EnvironmentVariables.AWS_S3_BUCKET, "cc-store");
 
-        // this payload JSON lives in the cc-bucket in my MINIO testing environment server
-        /*
-        string payloadString = File.ReadAllText("payload-ras.json");
-        await CCSimulator.Setup(payloadString, manifestID: "1", eventNumber: "987",
-                        eventID: "57", root: "data", pluginDefinition: "dss-to-csv",
-                        profile: "CC", ccBucketName: "cc-bucket"); 
-        */
 
-        var profileName = EnvironmentVariables.CC_PROFILE;
-        var bucket = new AwsBucket(profileName);
-        var manifestId = GetEnv(EnvironmentVariables.CC_MANIFEST_ID);
-        var root = GetEnv(EnvironmentVariables.CC_ROOT, "cc_store");
-        var key = Path.Combine(root, manifestId, Constants.PayloadFileName);
-        var json = await bucket.ReadObjectAsText(key);
-        Console.WriteLine(json);
-
-        //PluginManager pm = await PluginManager.CreateAsync();
-        //pm.LogMessage("hello from RAS Plugin");
-
+        PluginManager pm = await PluginManager.CreateAsync();
         //Payload p = pm.Payload;
 
         //MapArgs mapArgs = new MapArgs();
@@ -58,21 +43,5 @@ class Test
 
         //mapArgs.Execute();
 
-    }
-
-    internal static string GetEnv(string name, string defaultValue = "")
-    {
-        string x = Environment.GetEnvironmentVariable(name);
-
-        if (x == null)
-        {
-            Console.WriteLine("Error: did not find environment variable:'"
-              + name + "'   using default of '" + defaultValue + "'");
-            return defaultValue;
-        }
-        else
-        {
-            return x;
-        }
     }
 }
