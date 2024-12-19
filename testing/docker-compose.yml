@@ -22,11 +22,11 @@ services:
       /usr/bin/mc config host add minio http://minio:9000 USERNAME PASSWORD;
       /usr/bin/mc rb --force  minio/model-library;
       /usr/bin/mc mb minio/model-library;
-      /usr/bin/mc policy set public minio/model-library;
+      /usr/bin/mc anonymous set public minio/model-library;
       /usr/bin/mc cp --recursive /models/ minio/model-library/;
       /usr/bin/mc rb --force  minio/cc-store;
       /usr/bin/mc mb minio/cc-store;
-      /usr/bin/mc policy set public minio/cc-store;
+      /usr/bin/mc anonymous set public minio/cc-store;
       /usr/bin/mc cp --recursive /payloads/ minio/cc-store/cc_store/;
       exit 0;
       "
