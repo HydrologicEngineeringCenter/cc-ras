@@ -36,7 +36,7 @@ namespace cc_ras
             Geospatial.Vectors.Extent ext = result.Geometry.HydraulicExtent;
             RasterDefinition rdef = new(ext, CellSize);
 
-            ProgressReporter rep = new ConsoleProgressParser();
+            ProgressReporter rep = ProgressReporter.ConsoleWrite();
             return WriteMap(srcPrj, band, rdef, rep);
         }
 
