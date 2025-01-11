@@ -30,7 +30,7 @@ namespace cc_ras
                 return false;
 
 
-            var res = new ResultMapResampler(MapType, result.BaseOutputBlock, terr, result.Geometry.FlowAreaLayer.AllPropertyTables());
+            var res = new ResultMapResampler(MapType, result.BaseOutputBlock, terr, result.Geometry.FlowAreaLayer.AllPropertyTables()); 
             IResample<float> band = res.AsSingleProfile(PfIdx);
 
             Geospatial.Vectors.Extent ext = result.Geometry.HydraulicExtent;

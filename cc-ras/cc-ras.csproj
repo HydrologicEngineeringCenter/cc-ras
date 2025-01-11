@@ -10,7 +10,12 @@
 
   <ItemGroup>
     <PackageReference Include="HEC.RAS.Ras.Core" Version="0.1.0.1421-dev" />
-    <PackageReference Include="Usace.CC.Plugin" Version="1.0.5" />
   </ItemGroup>
-	
+
+  <ItemGroup>
+    <Reference Include="Usace.CC.Plugin">
+      <HintPath>..\..\cc-dotnet-sdk\Usace.CC.Plugin\bin\Debug\net7.0\Usace.CC.Plugin.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+	 
 </Project>
