@@ -12,18 +12,18 @@ class Test
 
         InitEnv();
 
-        PluginManager pm = await PluginManager.CreateAsync();
-        Payload p = pm.Payload;
+        PluginManager pluginManager = await PluginManager.CreateAsync();
+        Payload payload = pluginManager.Payload;
 
         // write the result file to local
-        DataSource resultDS = pm.getInputDataSource("Result File");
+        DataSource resultDS = pluginManager.getInputDataSource("Result File");
         string resultName = Path.GetFileName(resultDS.Paths[0]);
         resultFileName = resultName;
-        byte[] resultBytes = await pm.getFile(resultDS, 0);
+        byte[] resultBytes = await pluginManager.getFile(resultDS, 0);
         File.WriteAllBytes(resultName, resultBytes);
 
         // iterate through all of the terrain file paths and write to local
-        DataSource terrainDS = pm.getInputDataSource("Terrain File");
+        DataSource terrainDS = pluginManager.getInputDataSource("Terrain File");
         for (int i = 0; i < terrainDS.Paths.Length; i++)
         {
             string path = terrainDS.Paths[i];
@@ -32,28 +32,30 @@ class Test
             if (Path.GetExtension(path) == ".h5")
                 terrainFileName = terrainName;
 
-            byte[] terrainBytes = await pm.getFile(pm.getInputDataSource("Terrain File"), i);
+            byte[] terrainBytes = await pluginManager.getFile(pluginManager.getInputDataSource("Terrain File"), i);
             File.WriteAllBytes(terrainName, terrainBytes);
         }
         if (terrainFileName == null)
             throw new Exception("No terrain file found");
 
-        // generate the RAS map with the result file, terrain files, and parameters from payload
-        // TODO: put this in an action?
-        MapArgs mapArgs = new MapArgs();
-        mapArgs.ResultFilename = resultFileName;
-        mapArgs.TerrainFilename = terrainFileName;
-        mapArgs.OutputFilename = outputFileName;
-        mapArgs.CellSize = int.Parse(p.Attributes["CellSize"]);
-        mapArgs.PfIdx = int.Parse(p.Attributes["PfIndx"]);
-        mapArgs.MapType = (MapTypes)Enum.Parse(typeof(MapTypes), p.Attributes["MapType"]);
-        mapArgs.Execute();
+        foreach (Usace.CC.Plugin.Action action in payload.Actions)
+        {
+            // generate the RAS map with the result file, terrain files, and parameters from action
+            MapArgs mapArgs = new MapArgs();
+            mapArgs.ResultFilename = resultFileName;
+            mapArgs.TerrainFilename = terrainFileName;
+            mapArgs.OutputFilename = outputFileName;
+            mapArgs.CellSize = int.Parse(action.Parameters["CellSize"]);
+            mapArgs.PfIdx = int.Parse(action.Parameters["PfIndx"]);
+            mapArgs.MapType = (MapTypes)Enum.Parse(typeof(MapTypes), action.Parameters["MapType"]);
+            mapArgs.Execute();
 
-        // write map output file to S3 store
-        DataSource outputDS = pm.getOutputDataSource("Output File");
-        byte[] mapBytes = File.ReadAllBytes(Path.GetFileName(outputFileName));
-        MemoryStream ms = new MemoryStream(mapBytes);
-        bool success = await pm.FileWriter(ms, outputDS, 0);
+            // write map output file to S3 store
+            DataSource outputDS = pluginManager.getOutputDataSource("Output File");
+            byte[] mapBytes = File.ReadAllBytes(Path.GetFileName(outputFileName));
+            MemoryStream ms = new MemoryStream(mapBytes);
+            bool success = await pluginManager.FileWriter(ms, outputDS, 0);
+        } 
     }
 
     private static void SetEnv(string name, string value)

@@ -1,7 +1,12 @@
 # Build stage
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS builder
 
+ARG HEC_NEXUS_READ_UID
+ARG HEC_NEXUS_READ_PASSWORD
+
 COPY . .
+
+RUN dotnet nuget update source ras-nuget-public --username $HEC_NEXUS_READ_UID --password "$HEC_NEXUS_READ_PASSWORD" --store-password-in-clear-text
 
 # RUN dotnet build 
 

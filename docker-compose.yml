@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      args:
+        HEC_NEXUS_READ_UID: ${HEC_NEXUS_READ_UID}
+        HEC_NEXUS_READ_PASSWORD: ${HEC_NEXUS_READ_PASSWORD}
