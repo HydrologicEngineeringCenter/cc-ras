@@ -8,7 +8,7 @@ class Test
     {
         string terrainFileName = null;
         string resultFileName = null;
-        string outputFileName = null;
+        string outputFileName = "./output.tif";
 
         InitEnv();
 
@@ -55,7 +55,6 @@ class Test
                     mapArgs.MapType = (MapTypes)Enum.Parse(typeof(MapTypes), action.Parameters["MapType"]);
                     mapArgs.Execute();
 
-                    outputFileName = "./" + action.Name + "_output.tif";
                     // write map output file to S3 store
                     DataSource outputDS = pluginManager.getOutputDataSource("Output File");
                     byte[] mapBytes = File.ReadAllBytes(Path.GetFileName(outputFileName));
