@@ -8,7 +8,7 @@ class Test
     {
         string terrainFileName = null;
         string resultFileName = null;
-        string outputFileName = "./output.tif";
+        string outputFileName = null;
 
         InitEnv();
 
@@ -29,6 +29,7 @@ class Test
             string path = terrainDS.Paths[i];
             string terrainName = Path.GetFileName(path);
 
+            // only set the terrain file arg name for the .h5 file, not the HDFs
             if (Path.GetExtension(path) == ".h5")
                 terrainFileName = terrainName;
 
@@ -40,21 +41,32 @@ class Test
 
         foreach (Usace.CC.Plugin.Action action in payload.Actions)
         {
-            // generate the RAS map with the result file, terrain files, and parameters from action
-            MapArgs mapArgs = new MapArgs();
-            mapArgs.ResultFilename = resultFileName;
-            mapArgs.TerrainFilename = terrainFileName;
-            mapArgs.OutputFilename = outputFileName;
-            mapArgs.CellSize = int.Parse(action.Parameters["CellSize"]);
-            mapArgs.PfIdx = int.Parse(action.Parameters["PfIndx"]);
-            mapArgs.MapType = (MapTypes)Enum.Parse(typeof(MapTypes), action.Parameters["MapType"]);
-            mapArgs.Execute();
+            Console.WriteLine(action.Name);
+            switch (action.Type)
+            {
+                case "write-map":
+                    // generate the RAS map with the result file, terrain files, and parameters from action
+                    MapArgs mapArgs = new MapArgs();
+                    mapArgs.ResultFilename = resultFileName;
+                    mapArgs.TerrainFilename = terrainFileName;
+                    mapArgs.OutputFilename = outputFileName;
+                    mapArgs.CellSize = int.Parse(action.Parameters["CellSize"]);
+                    mapArgs.PfIdx = int.Parse(action.Parameters["PfIndx"]);
+                    mapArgs.MapType = (MapTypes)Enum.Parse(typeof(MapTypes), action.Parameters["MapType"]);
+                    mapArgs.Execute();
 
-            // write map output file to S3 store
-            DataSource outputDS = pluginManager.getOutputDataSource("Output File");
-            byte[] mapBytes = File.ReadAllBytes(Path.GetFileName(outputFileName));
-            MemoryStream ms = new MemoryStream(mapBytes);
-            bool success = await pluginManager.FileWriter(ms, outputDS, 0);
+                    outputFileName = "./" + action.Name + "_output.tif";
+                    // write map output file to S3 store
+                    DataSource outputDS = pluginManager.getOutputDataSource("Output File");
+                    byte[] mapBytes = File.ReadAllBytes(Path.GetFileName(outputFileName));
+                    MemoryStream ms = new MemoryStream(mapBytes);
+                    bool success = await pluginManager.FileWriter(ms, outputDS, 0);
+                    break;
+
+                default:
+                    Console.WriteLine("Invalid type \'" + action.Type + "\' for action \'" + action.Name + "\'");
+                    break;
+            }
         } 
     }
 
