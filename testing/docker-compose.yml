@@ -33,3 +33,11 @@ services:
     volumes:
       - ./models:/models
       - ./payloads:/payloads
+  cc-ras:
+    container_name: cc-ras
+    image: cc-ras  # Local image name
+    depends_on:
+      - minio  # Ensure this starts after MinIO
+    stdin_open: true  # Equivalent to -i flag
+    tty: true         # Equivalent to -t flag
+    command: bash
