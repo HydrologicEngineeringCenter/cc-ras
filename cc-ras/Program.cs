@@ -81,7 +81,7 @@ class Test
         SetEnv(EnvironmentVariables.CC_PROFILE + "_" + EnvironmentVariables.AWS_ACCESS_KEY_ID, "USERNAME");
         SetEnv(EnvironmentVariables.CC_PROFILE + "_" + EnvironmentVariables.AWS_SECRET_ACCESS_KEY, "PASSWORD");
         SetEnv(EnvironmentVariables.CC_PROFILE + "_" + EnvironmentVariables.AWS_S3_BUCKET, "cc-store");
-        SetEnv("CC_S3_ENDPOINT", "http://127.0.0.1:9000");
+        //SetEnv("CC_S3_ENDPOINT", "http://127.0.0.1:9000");
         SetEnv("CC_S3_MOCK", "true");
 
         SetEnv(EnvironmentVariables.CC_MANIFEST_ID, "1");
@@ -94,7 +94,7 @@ class Test
         SetEnv("FFRD_AWS_ACCESS_KEY_ID", "USERNAME");
         SetEnv("FFRD_AWS_SECRET_ACCESS_KEY", "PASSWORD");
         SetEnv("FFRD_AWS_S3_BUCKET", "model-library");
-        SetEnv("FFRD_S3_ENDPOINT", "http://127.0.0.1:9000");
+        //SetEnv("FFRD_S3_ENDPOINT", "http://127.0.0.1:9000");
         SetEnv("FFRD_S3_MOCK", "true");
     }
 }

@@ -19,7 +19,7 @@ namespace cc_ras
 
         public bool Execute()
         {
-            GDALSetup.InitializeMultiplatform("C:\\GDAL");
+            GDALSetup.InitializeMultiplatform();
 
             bool success;
 
