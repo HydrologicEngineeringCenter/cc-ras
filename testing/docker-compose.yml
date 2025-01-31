@@ -37,8 +37,5 @@ services:
     image: cc-ras 
     depends_on:
       - minio_init 
-    # environment:
-    #   - CC_S3_ENDPOINT=http://minio:9000  # Reference MinIO by its service name
-    #   - FFRD_S3_ENDPOINT=http://minio:9000  # Reference MinIO by its service name
     env_file:
       - .env
