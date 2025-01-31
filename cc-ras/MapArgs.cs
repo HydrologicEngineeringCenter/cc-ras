@@ -80,6 +80,4 @@ namespace cc_ras
             }
         }
     }
-
-    
 }

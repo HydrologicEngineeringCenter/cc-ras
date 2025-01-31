@@ -10,8 +10,6 @@ class Test
         string resultFileName = null;
         string outputFileName = "./output.tif";
 
-        InitEnv();
-
         PluginManager pluginManager = await PluginManager.CreateAsync();
         Payload payload = pluginManager.Payload;
 
@@ -67,34 +65,5 @@ class Test
                     break;
             }
         } 
-    }
-
-    private static void SetEnv(string name, string value)
-    {
-        Environment.SetEnvironmentVariable(name, value, EnvironmentVariableTarget.Process);
-    }
-
-    private static void InitEnv()
-    {
-        SetEnv(EnvironmentVariables.CC_PROFILE, "CC");
-        SetEnv(EnvironmentVariables.CC_PROFILE + "_" + EnvironmentVariables.AWS_DEFAULT_REGION, "us-west-2");
-        SetEnv(EnvironmentVariables.CC_PROFILE + "_" + EnvironmentVariables.AWS_ACCESS_KEY_ID, "USERNAME");
-        SetEnv(EnvironmentVariables.CC_PROFILE + "_" + EnvironmentVariables.AWS_SECRET_ACCESS_KEY, "PASSWORD");
-        SetEnv(EnvironmentVariables.CC_PROFILE + "_" + EnvironmentVariables.AWS_S3_BUCKET, "cc-store");
-        //SetEnv("CC_S3_ENDPOINT", "http://127.0.0.1:9000");
-        SetEnv("CC_S3_MOCK", "true");
-
-        SetEnv(EnvironmentVariables.CC_MANIFEST_ID, "1");
-        SetEnv(EnvironmentVariables.CC_EVENT_NUMBER, "987");
-        SetEnv(EnvironmentVariables.CC_EVENT_ID, "57");
-        SetEnv(EnvironmentVariables.CC_ROOT, "cc_store");
-        SetEnv(EnvironmentVariables.CC_PLUGIN_DEFINITION, "ras");
-
-        SetEnv("FFRD_AWS_DEFAULT_REGION", "us-west-2");
-        SetEnv("FFRD_AWS_ACCESS_KEY_ID", "USERNAME");
-        SetEnv("FFRD_AWS_SECRET_ACCESS_KEY", "PASSWORD");
-        SetEnv("FFRD_AWS_S3_BUCKET", "model-library");
-        //SetEnv("FFRD_S3_ENDPOINT", "http://127.0.0.1:9000");
-        SetEnv("FFRD_S3_MOCK", "true");
     }
 }
