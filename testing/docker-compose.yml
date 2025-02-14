@@ -1,0 +1,44 @@
+services:
+  minio:
+    container_name: s3
+    image: minio/minio
+    env_file:
+      - .env
+    command: server /data --console-address ":9001"
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+  # configure minio on startup (create buckets, etc)
+  # inspired by https://github.com/minio/minio/issues/4769
+  # and         https://gist.github.com/haxoza/22afe7cc4a9da7e8bdc09aad393a99cc
+  minio_init:
+    container_name: s3_init
+    image: minio/mc
+    depends_on:
+      - minio
+    # healthcheck:
+    #   test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc config host add minio http://minio:9000 USERNAME PASSWORD;
+      /usr/bin/mc rb --force  minio/model-library;
+      /usr/bin/mc mb minio/model-library;
+      /usr/bin/mc anonymous set public minio/model-library;
+      /usr/bin/mc cp --recursive /models/ minio/model-library/;
+      /usr/bin/mc rb --force  minio/cc-store;
+      /usr/bin/mc mb minio/cc-store;
+      /usr/bin/mc anonymous set public minio/cc-store;
+      /usr/bin/mc cp --recursive /payloads/ minio/cc-store/cc_store/;
+      exit 0;
+      "
+    volumes:
+      - ./models:/models
+      - ./payloads:/payloads
+  cc-ras:
+    container_name: cc-ras 
+    image: cc-ras 
+    depends_on:
+      minio_init:
+        condition: service_completed_successfully
+    env_file:
+      - .env
