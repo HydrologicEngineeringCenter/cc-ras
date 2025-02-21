@@ -51,7 +51,7 @@ class Test
                     mapArgs.CellSize = int.Parse(action.Parameters["CellSize"]);
                     mapArgs.PfIdx = int.Parse(action.Parameters["PfIndx"]);
                     mapArgs.MapType = (MapTypes)Enum.Parse(typeof(MapTypes), action.Parameters["MapType"]);
-                    mapArgs.Execute();
+                    mapArgs.CreateMapFromResult();
 
                     // write map output file to S3 store
                     DataSource outputDS = pluginManager.getOutputDataSource("Output File");
